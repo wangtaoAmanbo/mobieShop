@@ -1,0 +1,37 @@
+<view class="container">
+    <view class="orders">
+        <navigator url="../orderDetail/orderDetail?id={{item.id}}" class="order" wx:for="{{orderList}}" wx:key="{{item.id}}">
+            <view class="h">
+                <view class="l">订单号：{{item.order_sn}}</view>
+                <view class="r">{{item.order_status_text}}</view>
+                <!-- <view class="r">配送中</view> -->
+               
+            </view>
+            <view class="goods" wx:for="{{item.goodsList}}" wx:key="{{gitem.id}}" wx:for-item="gitem">
+                <view class="img">
+                    <image src="{{gitem.list_pic_url}}"></image>
+                </view>
+                <view class="info">
+                    <text class="name">{{gitem.goods_name}}</text>
+                    <text class="number">共{{gitem.number}}件商品</text>
+                </view>
+                <view class="status"></view>
+            </view>
+            <view class="b">
+                <view class="l">金额：￥{{item.actual_price}}</view>
+                <view class="r">
+                    <!-- <button class="btn" data-order-index="{{index}}" data-actual_price="{{item.actual_price}}" data-id="{{item.id}}" catchtap="payOrder" wx:if="{{item.handleOption.pay}}">去付款</button> -->
+                    <button class="btn" data-order-index="{{index}}" data-actual_price="{{item.actual_price}}" data-id="{{item.id}}" catchtap="payOrder" wx:if="{{item.order_status==0}}">去付款</button>
+                     <!-- <button class="btn"  catchtap="buyAgain" wx:if="{{item.order_status==101}}">取消订单</button> -->
+                    <!--   待收货-->
+                     <navigator url="../express/express?id={{item.id}}" wx:if="{{item.order_status==300}}" class='logisticInfo'> 
+                      <text>物流信息</text>
+                    </navigator>
+                     <button class="btn"  data-id="{{item.id}}" catchtap="confirmReceipt" wx:if="{{item.order_status==300}}">确认收货</button>
+                    <button class="btn"  data-goods_id="{{item.goodsList[0].goods_id}}" catchtap="buyAgain" wx:if="{{item.order_status==301}}">再次购买</button>
+                   
+                </view> 
+            </view>
+        </navigator>
+    </view>
+</view>
